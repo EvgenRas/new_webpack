@@ -2,6 +2,7 @@ const path = require('path');
 const project_folder = path.basename(__dirname);
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PostcssPresetEnv = require('postcss-preset-env');
 
 module.exports = {
     mode: 'development',
@@ -46,7 +47,19 @@ module.exports = {
         },
         {
           test: /\.s[ac]ss$/i,
-          use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+          use: [
+            MiniCssExtractPlugin.loader,
+            "css-loader",
+            {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  plugins: [postcssPresetEnv()],
+                },
+              },
+            },
+            "sass-loader"
+          ]
         },
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
