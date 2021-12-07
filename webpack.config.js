@@ -3,6 +3,7 @@ const project_folder = path.basename(__dirname);
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const postcssPresetEnv = require('postcss-preset-env');
+const ImageminPlugin = require("imagemin-webpack");
 
 module.exports = {
     mode: 'development',
@@ -20,7 +21,30 @@ module.exports = {
         template: "./#src/index.pug",
         favicon: "./#src/favicon.ico"
       }),
-      new MiniCssExtractPlugin()
+      new MiniCssExtractPlugin(),
+      new ImageminPlugin({
+        bail: false, // Ignore errors on corrupted images
+        cache: true,
+        imageminOptions: {
+          // Lossless optimization with custom option
+          // Feel free to experiment with options for better result for you
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["jpegtran", { progressive: true }],
+            ["optipng", { optimizationLevel: 3 }],
+            [
+              "svgo",
+              {
+                plugins: [
+                  {
+                    removeViewBox: false
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      })
     ],
     devServer: {
       watchFiles: {
