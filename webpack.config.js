@@ -2,7 +2,7 @@ const path = require('path');
 const project_folder = path.basename(__dirname);
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const PostcssPresetEnv = require('postcss-preset-env');
+const postcssPresetEnv = require('postcss-preset-env');
 
 module.exports = {
     mode: 'development',
@@ -58,6 +58,7 @@ module.exports = {
                 },
               },
             },
+            "group-css-media-queries-loader",
             "sass-loader"
           ]
         },
