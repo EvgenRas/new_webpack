@@ -9,7 +9,7 @@ module.exports = {
     mode: 'development',
     entry:
     {
-      main: './#src/index.js'
+      main: './src/index.js'
     },
     output: {
       path: path.resolve(__dirname, project_folder),
@@ -18,8 +18,8 @@ module.exports = {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: "./#src/index.pug",
-        favicon: "./#src/favicon.ico"
+        template: "./src/index.pug",
+        favicon: "./src/favicon.ico"
       }),
       new MiniCssExtractPlugin(),
       new ImageminPlugin({
@@ -48,7 +48,7 @@ module.exports = {
     ],
     devServer: {
       watchFiles: {
-        paths: ['#src/**/*.*'],
+        paths: ['src/**/*.*'],
         options: {
           usePolling: false,
         },
@@ -93,7 +93,6 @@ module.exports = {
             name: '[name].[ext]'
           }
         }
-
       ]
     }
  }
