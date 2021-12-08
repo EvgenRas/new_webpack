@@ -1,25 +1,29 @@
 const path = require('path');
-const project_folder = path.basename(__dirname);
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const postcssPresetEnv = require('postcss-preset-env');
 const ImageminPlugin = require("imagemin-webpack");
+const libImport = '@import \'./src/assets/scss/mixins.scss\';';
 
+const PATHS = {
+  src: path.join(__dirname, "./src"),
+  dist: path.join(__dirname, path.basename(__dirname)),
+};
 module.exports = {
     mode: 'development',
     entry:
     {
-      main: './src/index.js'
+      main: `${PATHS.src}/index.js`
     },
     output: {
-      path: path.resolve(__dirname, project_folder),
+      path: path.resolve(__dirname, PATHS.dist),
       filename: '[name].[contenthash].js',
       clean: true
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: "./src/index.pug",
-        favicon: "./src/favicon.ico"
+        template: `${PATHS.src}/index.pug`,
+        favicon: `${PATHS.src}/favicon.ico`
       }),
       new MiniCssExtractPlugin(),
       new ImageminPlugin({
@@ -48,7 +52,7 @@ module.exports = {
     ],
     devServer: {
       watchFiles: {
-        paths: ['src/**/*.*'],
+        paths: [`${PATHS.src}/**/*.*`],
         options: {
           usePolling: false,
         },
@@ -83,7 +87,8 @@ module.exports = {
               },
             },
             "group-css-media-queries-loader",
-            "sass-loader"
+            "sass-loader",
+            'webpack-append?'+ libImport
           ]
         },
         {
