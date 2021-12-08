@@ -2,8 +2,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const postcssPresetEnv = require('postcss-preset-env');
-const ImageminPlugin = require("imagemin-webpack");
 const libImport = '@import \'./src/assets/scss/mixins.scss\';';
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const { extendDefaultPlugins } = require("svgo");
 
 const PATHS = {
   src: path.join(__dirname, "./src"),
@@ -25,30 +26,7 @@ module.exports = {
         template: `${PATHS.src}/index.pug`,
         favicon: `${PATHS.src}/favicon.ico`
       }),
-      new MiniCssExtractPlugin(),
-      new ImageminPlugin({
-        bail: false, // Ignore errors on corrupted images
-        cache: true,
-        imageminOptions: {
-          // Lossless optimization with custom option
-          // Feel free to experiment with options for better result for you
-          plugins: [
-            ["gifsicle", { interlaced: true }],
-            ["jpegtran", { progressive: true }],
-            ["optipng", { optimizationLevel: 3 }],
-            [
-              "svgo",
-              {
-                plugins: [
-                  {
-                    removeViewBox: false
-                  }
-                ]
-              }
-            ]
-          ]
-        }
-      })
+      new MiniCssExtractPlugin()
     ],
     devServer: {
       watchFiles: {
@@ -61,7 +39,6 @@ module.exports = {
     },
     module: {
       rules: [
-        // pug
         {
           test: /\.pug$/,
           use: [
@@ -92,6 +69,10 @@ module.exports = {
           ]
         },
         {
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          type: "asset",
+        },
+        {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
           loader: 'file-loader',
           options: {
@@ -99,5 +80,38 @@ module.exports = {
           }
         }
       ]
-    }
+    },
+    optimization: {
+      minimizer: [
+        new ImageMinimizerPlugin({
+          minimizer: {
+            implementation: ImageMinimizerPlugin.imageminMinify,
+            options: {
+              plugins: [
+                ["gifsicle", { interlaced: true }],
+                ["jpegtran", { progressive: true }],
+                ["optipng", { optimizationLevel: 3 }],
+                [
+                  "svgo",
+                  {
+                    plugins: extendDefaultPlugins([
+                      {
+                        name: "removeViewBox",
+                        active: false,
+                      },
+                      {
+                        name: "addAttributesToSVGElement",
+                        params: {
+                          attributes: [{ xmlns: "http://www.w3.org/2000/svg" }],
+                        },
+                      },
+                    ]),
+                  },
+                ],
+              ],
+            },
+          },
+        }),
+      ],
+    },
  }
