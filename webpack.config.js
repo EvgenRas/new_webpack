@@ -18,7 +18,7 @@ module.exports = {
     },
     output: {
       path: path.resolve(__dirname, PATHS.dist),
-      filename: '[name].[contenthash].js',
+      filename: 'js/[name].[contenthash].js',
       clean: true
     },
     plugins: [
@@ -26,7 +26,10 @@ module.exports = {
         template: `${PATHS.src}/index.pug`,
         favicon: `${PATHS.src}/favicon.ico`
       }),
-      new MiniCssExtractPlugin()
+      new MiniCssExtractPlugin({
+        linkType: "text/css",
+        filename: 'css/[name][contenthash].css'
+      })
     ],
     devServer: {
       watchFiles: {
@@ -84,6 +87,15 @@ module.exports = {
     optimization: {
       minimizer: [
         new ImageMinimizerPlugin({
+          generator: [
+            {
+              preset: "webp",
+              implementation: ImageMinimizerPlugin.imageminGenerate,
+              options: {
+                plugins: ["imagemin-webp"],
+              },
+            },
+          ],
           minimizer: {
             implementation: ImageMinimizerPlugin.imageminMinify,
             options: {
