@@ -7,7 +7,10 @@
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development --open",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "getFonts": "gulp",
+    "otf2ttf": "gulp otf2ttf",
+    "svgsprite": "gulp svgsprite"
   },
   "browserslist": [
     "last 2 versions"
@@ -18,6 +21,14 @@
     "css-loader": "^6.5.1",
     "file-loader": "^6.2.0",
     "group-css-media-queries-loader": "^4.3.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-fonter": "^0.3.0",
+    "gulp-svg-sprite": "^1.5.0",
+    "gulp-ttf-svg": "^1.0.1",
+    "gulp-ttf2eot": "^1.1.2",
+    "gulp-ttf2woff": "^1.1.1",
+    "gulp-ttf2woff2": "^4.0.1",
     "html-webpack-plugin": "^5.5.0",
     "image-minimizer-webpack-plugin": "^3.0.1",
     "imagemin-gifsicle": "^7.0.0",
