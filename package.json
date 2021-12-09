@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development --open",
     "watch": "webpack --mode development --watch",
-    "getFonts": "gulp",
+    "getFonts": "gulp --option min",
+    "getFontsMax": "gulp --option max",
     "otf2ttf": "gulp otf2ttf",
     "svgsprite": "gulp svgsprite"
   },

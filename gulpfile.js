@@ -21,16 +21,17 @@ const path = {
 
 function getFonts(cb) {
   src(path.src.fonts)
+    .pipe(ttf2woff())
+    .pipe(dest(path.build.fonts));
+  src(path.src.fonts)
+    .pipe(ttf2woff2())
+    .pipe(dest(path.build.fonts));
+  if (process.argv[3] === 'min') {cb(); return;}
+  src(path.src.fonts)
     .pipe(ttf2eot())
     .pipe(dest(path.build.fonts));
   src(path.src.fonts)
     .pipe(ttf2svg())
-    .pipe(dest(path.build.fonts));
-  src(path.src.fonts)
-    .pipe(ttf2woff())
-    .pipe(dest(path.build.fonts));
-  return src(path.src.fonts)
-    .pipe(ttf2woff2())
     .pipe(dest(path.build.fonts));
   cb();
 }
@@ -44,7 +45,7 @@ function fontsStyle(done) {
         let fontname = items[i].split('.');
         fontname = fontname[0];
         if (c_fontname != fontname) {
-          fs.appendFile(source_folder + '/assets/scss/fonts.scss', '@include font(\'' + getName(fontname) + '\', \'' + fontname + '\', \'' + getWeight(fontname) + '\' , \'' + getFontStyle(fontname) + '\');\r\n', cb);
+          fs.appendFile(source_folder + '/assets/scss/fonts.scss', '@include font(\'' + getName(fontname) + '\', \'' + fontname + '\', \'' + getWeight(fontname) + '\' , \'' + getFontStyle(fontname) + '\', \'' + process.argv[3] + '\');\r\n', cb);
         }
         c_fontname = fontname;
       }
@@ -52,6 +53,7 @@ function fontsStyle(done) {
   })
   done();
 }
+
 // only google fonts naming
 // 100 - thin
 // 200 - lite

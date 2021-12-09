@@ -1,9 +1,20 @@
-@mixin font($font-name, $file-name, $weight, $style) {
+@mixin font($font-name, $file-name, $weight, $style, $full: 'min') {
   @font-face {
     font-display: swap;
     font-family: $font-name;
     font-style: #{$style};
     font-weight: #{$weight};
-    src: url('../fonts/#{$file-name}.eot'), url('../fonts/#{$file-name}.woff') format('woff'), url('../fonts/#{$file-name}.woff2') format('woff2', url('../fonts/#{$file-name}.ttf') format('truetype'), url('../fonts/#{$file-name}.eot?#iefix') format('embedded-opentype'), url('../fonts/#{$file-name}.svg?#{$file-name}') format('svg'));
+    @if $full == max {
+      src: url('../fonts/#{$file-name}.eot') format('embedded-opentype');
+      src: url('../fonts/#{$file-name}.eot?#iefix') format('embedded-opentype'),
+           url('../fonts/#{$file-name}.ttf') format('truetype'),
+           url('../fonts/#{$file-name}.woff') format('woff'),
+           url('../fonts/#{$file-name}.woff2') format('woff2'),
+           url('../fonts/#{$file-name}.svg?#{$file-name}') format('svg');
+    }
+    @if $full == min {
+      src: url('../fonts/#{$file-name}.woff') format('woff'),
+      url('../fonts/#{$file-name}.woff2') format('woff2');
+    }
   }
 }
